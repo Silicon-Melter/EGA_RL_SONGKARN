@@ -46,7 +46,7 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
     if abs(distance_now - distance_before) < 0.001:
         r = r - 1.0
         print("not moving  -1  ")
-    df = pd.read_csv(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx", encoding="utf-8")  # Try 'utf-8' encoding
+    df = pd.read_excel(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx")  # Try 'utf-8' encoding
     data = {
         "distance_diff": [distance_diff],
         "before_track_diff": [before_track_diff],
@@ -63,7 +63,7 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
 
 def yaw_reward(before_track_diff, after_track_diff):
     #sub-reward from getting closer to 0 degree
-    before = -1*before_track_diff**2+10
-    after = -1*after_track_diff**2+10
+    before = -5*before_track_diff**2+10
+    after = -5*after_track_diff**2+10
     #see for improvement
     return after+0.5*(after-before)
