@@ -4,9 +4,8 @@ from utils.calculation_utils import yaw_diff_nomalized
 from utils.airsim_plotting import draw_text
 from utils.airsim_utils import to_vec3r
 import math
-import xml.etree.ElementTree as ET
-root = ET.Element("data")
-variables = ET.SubElement(root, "variables")
+import pandas as pd
+
 # reward as a result of taking actions
 def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_pry, cur_pos):
     #r = -2.0 # for doing nothing
@@ -25,13 +24,7 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
     r +=  yaw_rew
     r +=  distance_rew
     
-    ET.SubElement(variables, "distance_diff").text = str(distance_diff)
-    ET.SubElement(variables, "before_track_diff").text = str(before_track_diff)
-    ET.SubElement(variables, "after_track_diff").text = str(after_track_diff)
-    ET.SubElement(variables, "distance_reward").text = str(distance_rew)
-    ET.SubElement(variables, "yaw_reward").text = str(yaw_rew)
-    ET.SubElement(variables, "reward").text = str(r)
-
+    
     draw_text(
         client,
         [
@@ -46,17 +39,25 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
             # to_vec3r((cur_pos[0], cur_pos[1], cur_pos[2]+0.4)),
             # to_vec3r((cur_pos[0], cur_pos[1], cur_pos[2]+0.6)),
         ]
+        
     )
    
 
     if abs(distance_now - distance_before) < 0.001:
         r = r - 1.0
         print("not moving  -1  ")
-    destination_directory = r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs"
-
-    # Create XML tree and write to file
-    tree = ET.ElementTree(root)
-    tree.write(destination_directory + "\\variables_log.xml")
+    df = pd.read_csv(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx", encoding="utf-8")  # Try 'utf-8' encoding
+    data = {
+        "distance_diff": [distance_diff],
+        "before_track_diff": [before_track_diff],
+        "after_track_diff": [after_track_diff],
+        "distance_reward": [distance_rew],
+        "yaw_reward": [yaw_rew],
+        "reward": [r]
+    }
+    print(data)
+    df = df._append(pd.DataFrame(data), ignore_index=True)
+    df.to_excel(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx", index=False)
     return r 
 
 
