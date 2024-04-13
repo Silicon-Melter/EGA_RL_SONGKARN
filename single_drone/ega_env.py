@@ -78,6 +78,7 @@ class EgaEnv(gym.Env):
         #get distance before taking action
         cur_pos1 = get_current_position(self.client, self.vehicle_name)
         distance1 = distance_3d(cur_pos1, self.goal)
+        bef_pry = get_pitch_roll_yaw(self.client, self.vehicle_name)
 
         #take action
         collisionInfo = direction_based_navigation_2D(self.client, self.vehicle_name, action) #observation as a result of taking an action
@@ -108,7 +109,7 @@ class EgaEnv(gym.Env):
         else:
             done = False
             #compute reward here
-            reward = computeReward(self.client, distance1, distance2, goal_rad, cur_pry, cur_pos)
+            reward = computeReward(self.client, distance1, distance2, goal_rad, cur_pry, bef_pry, cur_pos)
             # print(f"distance_from_goal:  {distance}     ")
             # print(f"reward_step:  {reward}      ")
             # print(f"step  {self.stepN}")
