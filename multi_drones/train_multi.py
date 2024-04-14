@@ -33,7 +33,7 @@ def config_new_train():
         save_vecnormalize=False
     )
     envs = SubprocVecEnv([lambda: EgaEnv(0, formatted_datetime), lambda: EgaEnv(1, formatted_datetime), lambda: EgaEnv(2, formatted_datetime), lambda: EgaEnv(3, formatted_datetime), lambda: EgaEnv(4, formatted_datetime), lambda: EgaEnv(5, formatted_datetime), lambda: EgaEnv(6, formatted_datetime), lambda: EgaEnv(7, formatted_datetime)])
-    model = PPO("MultiInputPolicy", envs, n_steps=2048, batch_size=64)
+    model = PPO("MultiInputPolicy", envs, n_steps=2048, batch_size=64, ent_coef=0.1)
     model.set_logger(new_logger)
         
     return model, checkpoint_callback
