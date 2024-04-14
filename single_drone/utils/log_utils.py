@@ -55,10 +55,10 @@ def make_episodeLog_folder():
     now = datetime.datetime.now()
     formatted_datetime = now.strftime("%d.%m.%y-%H.%M") #02.04.24-10.35 
     try:
-        os.mkdir(f'/Users/EGA/Documents/GitHub/AI_logs/episodeLogs/{formatted_datetime}')  
+        os.mkdir(f'/Users/noppa/Documents/GitHub/AI_logs/episodeLogs/{formatted_datetime}')  
     except FileExistsError:
         print("Directory already exists")
         
-    tmp_path = f"/Users/EGA/Documents/GitHub/AI_logs/episodeLogs/{formatted_datetime}"
+    tmp_path = f"/Users/noppa/Documents/GitHub/AI_logs/episodeLogs/{formatted_datetime}"
 
     return tmp_path

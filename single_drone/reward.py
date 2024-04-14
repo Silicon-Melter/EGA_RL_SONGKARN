@@ -46,7 +46,7 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
     if abs(distance_now - distance_before) < 0.001:
         r = r - 1.0
         print("not moving  -1  ")
-    df = pd.read_excel(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx")  # Try 'utf-8' encoding
+    df = pd.read_excel(r"C:\Users\noppa\Documents\GitHub\AI_logs\rewLogs\data.xlsx")  # Try 'utf-8' encoding
     data = {
         "distance_diff": [distance_diff],
         "before_track_diff": [before_track_diff],
@@ -57,7 +57,7 @@ def computeReward(client, distance_before, distance_now, goal_rad, cur_pry, bef_
     }
     print(data)
     df = df._append(pd.DataFrame(data), ignore_index=True)
-    df.to_excel(r"C:\Users\EGA\Documents\GitHub\AI_logs\rewLogs\data.xlsx", index=False)
+    df.to_excel(r"C:\Users\noppa\Documents\GitHub\AI_logs\rewLogs\data.xlsx", index=False)
     return r 
 
 

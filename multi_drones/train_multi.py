@@ -32,21 +32,21 @@ def config_new_train():
         save_replay_buffer=False,
         save_vecnormalize=False
     )
-    envs = SubprocVecEnv([lambda: EgaEnv(0, formatted_datetime), lambda: EgaEnv(1, formatted_datetime), lambda: EgaEnv(2, formatted_datetime)])
+    envs = SubprocVecEnv([lambda: EgaEnv(0, formatted_datetime), lambda: EgaEnv(1, formatted_datetime), lambda: EgaEnv(2, formatted_datetime), lambda: EgaEnv(3, formatted_datetime), lambda: EgaEnv(4, formatted_datetime), lambda: EgaEnv(5, formatted_datetime), lambda: EgaEnv(6, formatted_datetime), lambda: EgaEnv(7, formatted_datetime)])
     model = PPO("MultiInputPolicy", envs, n_steps=2048, batch_size=64)
     model.set_logger(new_logger)
         
     return model, checkpoint_callback
 
-def config_continue_train(date_time, envs):
+def config_continue_train(formatted_datetime, envs):
     try:
-        os.mkdir(f'train/{date_time}/logs{date_time}')
+        os.mkdir(f'train/{formatted_datetime}/logs{formatted_datetime}')
     except FileExistsError:
         print("Directory already exists")
         
-    tmp_path = f"train/{date_time}/logs{date_time}"
-    files = os.listdir(f"train/{date_time}/checkpoints")
-    model_path = f"train/{date_time}/checkpoints/{files[-1]}" #select the last model
+    tmp_path = f"train/{formatted_datetime}/logs{formatted_datetime}"
+    files = os.listdir(f"train/{formatted_datetime}/checkpoints")
+    model_path = f"train/{formatted_datetime}/checkpoints/{files[-1]}" #select the last model
     try:
         model = PPO.load(model_path, envs, n_steps=2048, batch_size=64) #n_step=2048 64
     except:
@@ -57,8 +57,8 @@ def config_continue_train(date_time, envs):
 
     checkpoint_callback = CheckpointCallback(
     save_freq=5000,
-    save_path=f"./train/{date_time}/checkpoints",
-    name_prefix=f"{date_time}",
+    save_path=f"./train/{formatted_datetime}/checkpoints",
+    name_prefix=f"{formatted_datetime}",
     save_replay_buffer=False,
     save_vecnormalize=False
     )
@@ -74,10 +74,10 @@ parser.add_argument("-c", "--con_train", type=str, help="Continue Training")
 args = parser.parse_args()
 
 if __name__ == "__main__":
-    date_time = args.con_train
-    if date_time != None:
-        envs = SubprocVecEnv([lambda: EgaEnv(0, date_time), lambda: EgaEnv(1, date_time), lambda: EgaEnv(2, date_time)])
-        model, checkpoint_callback = config_continue_train(date_time, envs)
+    formatted_datetime = args.con_train
+    if formatted_datetime != None:
+        envs = SubprocVecEnv([lambda: EgaEnv(0, formatted_datetime), lambda: EgaEnv(1, formatted_datetime), lambda: EgaEnv(2, formatted_datetime), lambda: EgaEnv(3, formatted_datetime), lambda: EgaEnv(4, formatted_datetime), lambda: EgaEnv(5, formatted_datetime), lambda: EgaEnv(6, formatted_datetime), lambda: EgaEnv(7, formatted_datetime)])
+        model, checkpoint_callback = config_continue_train(formatted_datetime, envs)
     else:
         model, checkpoint_callback = config_new_train()
 
