@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
+multi_drones/train
 # Distribution / packaging
 .Python
 build/
